@@ -1,0 +1,24 @@
+{
+  "name": "econexa",
+  "version": "1.0.0",
+  "description": "EcoNexa - Intelligent Waste Prediction and Monitoring System",
+  "scripts": {
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "test:backend": "cd backend && npm test",
+    "seed": "cd backend && npm run seed"
+  },
+  "keywords": [
+    "waste-management",
+    "machine-learning",
+    "iot-monitoring",
+    "route-optimization",
+    "fastapi",
+    "react",
+    "leaflet",
+    "mongodb"
+  ],
+  "author": "SmartWaste AI Team",
+  "license": "MIT"
+}

@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Backend (Node.js)",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/backend/src/server.js",
+      "cwd": "${workspaceFolder}/backend",
+      "restart": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug ML Service (FastAPI)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["app:app", "--port", "5001", "--reload"],
+      "cwd": "${workspaceFolder}/ml_service",
+      "jinja": true,
+      "justMyCode": true
+    }
+  ]
+}

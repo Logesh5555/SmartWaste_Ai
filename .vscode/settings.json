@@ -1,0 +1,6 @@
+{
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "editor.formatOnSave": true,
+  "files.autoSave": "afterDelay",
+  "python.defaultInterpreterPath": "python"
+}

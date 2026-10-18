@@ -1,0 +1,64 @@
+{
+  "model_name": "Multi-Horizon Random Forest Regressor",
+  "version": "1.2.0",
+  "trained_at": "2026-10-18T13:31:38.211629Z",
+  "sample_count": 7500,
+  "train_samples": 6000,
+  "test_samples": 1500,
+  "features": {
+    "numeric": [
+      "capacity_liters",
+      "current_fill_percentage",
+      "hour_of_day",
+      "day_of_week",
+      "is_weekend",
+      "hours_since_last_collection",
+      "historical_filling_rate"
+    ],
+    "categorical": [
+      "ward",
+      "category"
+    ]
+  },
+  "target_horizons": [
+    "fill_next_6h",
+    "fill_next_12h",
+    "fill_next_24h"
+  ],
+  "metrics_per_horizon": {
+    "fill_next_6h": {
+      "MAE": 1.43,
+      "RMSE": 1.91,
+      "R2": 0.9923
+    },
+    "fill_next_12h": {
+      "MAE": 2.16,
+      "RMSE": 2.96,
+      "R2": 0.9837
+    },
+    "fill_next_24h": {
+      "MAE": 1.36,
+      "RMSE": 2.19,
+      "R2": 0.9902
+    }
+  },
+  "aggregate_metrics": {
+    "average_MAE": 1.65,
+    "average_RMSE": 2.35,
+    "average_R2": 0.9887
+  },
+  "wards_covered": [
+    "Ward-1 Central Market",
+    "Ward-2 Tech Corridor",
+    "Ward-3 Green Residences",
+    "Ward-4 Metro Station",
+    "Ward-5 Heritage Quarter"
+  ],
+  "categories_covered": [
+    "organic",
+    "recyclable",
+    "general",
+    "hazardous"
+  ],
+  "data_notice": "Trained on calibrated municipal waste dynamic simulation dataset reflecting diurnal & weekly cycle variances."
+}

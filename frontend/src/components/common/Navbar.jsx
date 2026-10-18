@@ -13,6 +13,11 @@ import {
   CheckCircle2,
   AlertTriangle,
   Radio,
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 
 export const Navbar = ({ onToggleSidebar, activePage, setActivePage }) => {
@@ -59,9 +64,35 @@ export const Navbar = ({ onToggleSidebar, activePage, setActivePage }) => {
     }
   };
 
+  const PAGE_NAMES = {
+    dashboard: 'Admin Dashboard',
+    'staff-portal': 'Staff Task Portal',
+    bins: 'Bin Management',
+    'bin-detail': 'Bin Telemetry & Details',
+    map: 'Live IoT Telemetry Map',
+    predictions: 'AI Fill Predictions',
+    scheduling: 'Smart Route Scheduling',
+    alerts: 'Active Incident Alerts',
+    analytics: 'Analytics & Forecasting',
+    users: 'Municipal Staff & Users',
+    settings: 'System & Profile Settings',
+  };
+
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
+  const handleGoForward = () => {
+    window.history.forward();
+  };
+
+  const currentPageLabel = PAGE_NAMES[activePage] || 'Dashboard';
+  const homeTarget = user?.role === 'staff' ? 'staff-portal' : 'dashboard';
+
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 sm:px-6 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Mobile Sidebar Toggle */}
         <button
           onClick={onToggleSidebar}
           className="p-2 text-slate-500 rounded-xl lg:hidden hover:bg-slate-100 hover:text-slate-800 focus:outline-none transition-colors"
@@ -72,7 +103,22 @@ export const Navbar = ({ onToggleSidebar, activePage, setActivePage }) => {
           </svg>
         </button>
 
-        <div className="flex items-center gap-2.5 group cursor-default">
+        {/* Mobile Direct Back Navigation Button */}
+        <button
+          onClick={handleGoBack}
+          title="Go Back to Previous Page"
+          className="p-2 text-slate-600 rounded-xl md:hidden hover:bg-slate-100 hover:text-slate-900 active:scale-95 transition-all"
+          aria-label="Go Back"
+        >
+          <ArrowLeft className="w-5 h-5 text-emerald-600" />
+        </button>
+
+        {/* App Brand */}
+        <div 
+          onClick={() => setActivePage && setActivePage(homeTarget)}
+          className="flex items-center gap-2.5 group cursor-pointer select-none"
+          title="Return to Home Dashboard"
+        >
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 group-hover:shadow-emerald-600/30 transition-all duration-300">
             <Activity className="w-5 h-5 group-hover:animate-pulse" />
           </div>
@@ -80,10 +126,48 @@ export const Navbar = ({ onToggleSidebar, activePage, setActivePage }) => {
             <h1 className="text-lg font-black text-slate-900 tracking-tight leading-none group-hover:text-emerald-700 transition-colors">
               EcoNexa
             </h1>
-            <p className="text-[11px] text-slate-500 hidden sm:block font-medium">
-              Intelligent Waste Prediction &amp; Monitoring
+            <p className="text-[11px] text-slate-500 hidden xl:block font-medium">
+              Intelligent Waste Monitoring
             </p>
           </div>
+        </div>
+
+        {/* Navigation History Symbols: Back & Forward buttons */}
+        <div className="hidden sm:flex items-center ml-2 pl-3 border-l border-slate-200 gap-1">
+          <button
+            onClick={handleGoBack}
+            title="Navigate Back (Previous Page)"
+            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all active:scale-95 group flex items-center justify-center border border-slate-200/70"
+            aria-label="Back"
+          >
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          </button>
+          <button
+            onClick={handleGoForward}
+            title="Navigate Forward"
+            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all active:scale-95 group flex items-center justify-center border border-slate-200/70"
+            aria-label="Forward"
+          >
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+
+        {/* Breadcrumb Navigation Trail */}
+        <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-500 ml-1">
+          <button
+            onClick={() => setActivePage && setActivePage(homeTarget)}
+            className="flex items-center gap-1 font-semibold text-slate-600 hover:text-emerald-600 px-2 py-1 rounded-md hover:bg-emerald-50 transition-colors"
+            title="Go to Home"
+          >
+            <Home className="w-3.5 h-3.5" />
+            <span>Home</span>
+          </button>
+
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+
+          <span className="font-bold text-slate-800 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/80 shadow-xs text-[11px]">
+            {currentPageLabel}
+          </span>
         </div>
       </div>
 

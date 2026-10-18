@@ -1,0 +1,19 @@
+# Render Blueprint Specification — All-in-One Deployment
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: econexa
+    env: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false

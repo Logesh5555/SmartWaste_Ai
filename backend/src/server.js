@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+const { spawn } = require('child_process');
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
@@ -61,7 +64,25 @@ app.use('/api/alerts', alertRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/users', userRoutes);
 
-// 404 handler
+// Serve static frontend files if frontend/dist exists (All-in-One Deployment)
+const frontendDistPath = path.resolve(__dirname, '../../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+
+  // SPA fallback for non-API client routes
+  app.get('*', (req, res, next) => {
+    if (req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/socket.io')) {
+      return next();
+    }
+    const indexPath = path.join(frontendDistPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+    next();
+  });
+}
+
+// 404 handler for unmatched API routes
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
@@ -79,6 +100,22 @@ const startServer = async () => {
 
     // Start background simulator
     startSimulator(config.simulatorIntervalMs);
+
+    // Optionally spawn local Python ML service in background if present
+    const mlDir = path.resolve(__dirname, '../../ml_service');
+    if (fs.existsSync(path.join(mlDir, 'app.py'))) {
+      const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+      try {
+        const mlProc = spawn(pythonCmd, ['-m', 'uvicorn', 'app:app', '--host', '127.0.0.1', '--port', '5001'], {
+          cwd: mlDir,
+          stdio: 'ignore',
+          detached: true,
+        });
+        mlProc.unref();
+      } catch (e) {
+        // Fallback analytical prediction engine automatically handles predictions
+      }
+    }
 
     server.listen(config.port, () => {
       console.log(`======================================================`);

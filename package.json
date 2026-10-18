@@ -4,7 +4,7 @@
   "description": "EcoNexa - Intelligent Waste Prediction and Monitoring System",
   "main": "backend/src/server.js",
   "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "build": "npm install --prefix backend && npm install --prefix frontend --include=dev && npm run build --prefix frontend",
     "start": "node backend/src/server.js",
     "test": "cd backend && npm test",
     "dev:backend": "cd backend && npm start",
